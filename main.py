@@ -1,21 +1,19 @@
 turn = 4
-col = [[0 for x in range(7)] for y in range(6)]
-row = [[0 for i in range(6)] for j in range(7)]
+""" col = [[0 for x in range(7)] for y in range(6)]
+ """
+col = [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0],
+       [1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
 
+row = [[0 for i in range(6)] for j in range(7)]
 play = (3, 4)
 
 
 def modifyRow(play, row):
     newplay = (play[1], play[0])
     row[newplay[0]][newplay[1]] = 1
-    print(row)
 
 
 modifyRow(play, row)
-col[play[0]][play[1]] = 1
-
-print(col[play[0]][play[1]])
-print(col)
 
 if turn > 3:
     for i in row:
@@ -29,3 +27,17 @@ if turn > 3:
             print("You win!")
             break
         sum(j)
+
+
+def CheckDiag(col):
+    print("Checking Diagonal", col)
+    for j in range(7):
+        print(col[0][j])
+        print("\n")
+        print(col[1][j])
+        if col[0][j] == 1 and col[1][j + 1] == 1:
+            print("You win!")
+            break
+
+
+CheckDiag(col[2:4])
