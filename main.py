@@ -1,8 +1,8 @@
 turn = 4
 """ col = [[0 for x in range(7)] for y in range(6)]
  """
-col = [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0],
-       [1, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
+col = [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 1, 0],
+       [1, 0, 0, 0, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
 
 row = [[0 for i in range(6)] for j in range(7)]
 play = (3, 4)
@@ -32,12 +32,9 @@ if turn > 3:
 def CheckDiag(col):
     print("Checking Diagonal", col)
     for j in range(7):
-        print(col[0][j])
-        print("\n")
-        print(col[1][j])
-        if col[0][j] == 1 and col[1][j + 1] == 1:
-            print("You win!")
-            break
+        if (col[1][j] == 1 and col[0][j + 1] == 1) or (col[0][j] == 1
+                                                       and col[1][j + 1] == 1):
+            print("Diagonal Detected")
 
 
 CheckDiag(col[2:4])
