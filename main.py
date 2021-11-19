@@ -1,11 +1,28 @@
+from typing import Counter
+
 turn = 4
-""" col = [[0 for x in range(7)] for y in range(6)]
- """
-col = [[0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 1, 1],
-       [1, 0, 0, 0, 0, 1, 1], [0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
+Counter1 = 0
+col = [[1, 0, 0, 0, 0, 0, 0], [0, 1, 0, 0, 0, 0, 0], [0, 1, 1, 0, 0, 1, 1],
+       [1, 0, 0, 1, 0, 1, 1], [0, 0, 0, 0, 1, 0, 0], [0, 0, 0, 0, 0, 0, 0]]
+
+col2 = [[1, 2, 3, 4, 5, 6, 7], [11, 12, 13, 14, 15, 16, 17],
+        [21, 22, 23, 24, 25, 26, 27], [31, 32, 33, 34, 35, 36, 37],
+        [41, 42, 43, 44, 45, 46, 47], [51, 52, 53, 54, 55, 56, 57]]
 
 row = [[0 for i in range(6)] for j in range(7)]
 play = (3, 4)
+
+
+def FourinRow(arr):
+    b = 0
+    for i in range(len(arr)):
+        if arr[i] == 0:
+            b = 0
+        else:
+            b += arr[i]
+            if b == 4:
+                print("Four in a row")
+        print(b)
 
 
 def modifyRow(play, row):
@@ -39,4 +56,30 @@ def CheckDiag(col):
     print("Diagonal Check Complete")
 
 
-CheckDiag(col[2:4])
+def Digonal(matrix):
+
+    a = 0
+
+    for j in range(2):
+        for i in range(6):
+            arr = []
+            arr.append(matrix[i][i + j])
+            print(matrix[i][i + j])
+        print("\n")
+
+
+Digonal(col)
+
+zero = [1, 0, 1, 0, 1, 0, 1]
+four = [0, 0, 0, 1, 1, 1, 1]
+
+
+def FourinRow(arr):
+    b = 0
+    for i in range(len(arr)):
+        if arr[i] == 0:
+            b = 0
+        else:
+            b += arr[i]
+            if b == 4:
+                print("Four in a row")
