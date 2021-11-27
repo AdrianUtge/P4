@@ -33,8 +33,8 @@ def fourInRow(liste, nbr=4):
 ##################################
 #fonctions provisoire, utiliser pour simplifier les test
 from random import randint
-def mat():
-    return [[randint(0,2) for i in range(7)] for j in range(6)]
+def mat(a = 7, b = 6):
+    return [[randint(0,2) for i in range(a)] for j in range(b)]
 def pri(t):
     for i in t: print(i)
 def test(a):
@@ -57,6 +57,7 @@ def checkMatrix(matrix, nbr = 4):
 
     length = len(matrix)
     width = len(matrix[0])
+    limit = min(length, width)
     for i in range(length):
         winner, index = fourInRow(matrix[i], nbr)
         if (winner): return "row", winner, i, index
@@ -67,23 +68,25 @@ def checkMatrix(matrix, nbr = 4):
         if (winner): return "col", winner, index, i
 
     #seriously needs to be upgraded, such as returned coordinates, returned sequence type and upgrade the bad usage of for loops 
-    for i in range(length):
-        diagonal = [matrix[j][j - i] for j in range(i, length)]
+    for i in range(width - nbr + 1):
+        diagonal = [matrix[k][j] for j, k in zip(range(i, width), range(limit))]
         winner, index = fourInRow(diagonal, nbr)
-        if (winner): return "diag1", winner, index+i, index
+        if (winner): return "diag1", winner, index, index+i
 
-        diagonal = [matrix[j][length + i - j] for j in range(i, length)]
+        diagonal = [matrix[k][j] for j, k in zip(range(i, width), range(limit-1, -1, -1))]
         winner, index = fourInRow(diagonal, nbr)
         if (winner): return "diag2", winner, index+i, index #coordinates not working
 
-        diagonal = [matrix[j][i - j] for j in range(i, -1, -1)]
-        winner, index = fourInRow(diagonal, nbr)
-        if (winner): return "diag3", winner, index+i, index #coordinates not working
+    for i in range(1, length - 1):
+        if (length - i >= nbr):
+            diagonal = [matrix[j][k] for j, k in zip(range(i, length), range(limit))]
+            winner, index = fourInRow(diagonal, nbr)
+            if (winner): return "diag3", winner, index+i, index
 
-
-        diagonal = [matrix[j][length - i + j] for j in range(i, -1, -1)]
-        winner, index = fourInRow(diagonal, nbr)
-        if (winner): return "diag4", winner, index+i, index #coordinates not working
+        if (i + 1 >= nbr):
+            diagonal = [matrix[j][k] for j, k in zip(range(i, -1, -1), range(limit))]
+            winner, index = fourInRow(diagonal, nbr)
+            if (winner): return "diag4", winner, index+i, index
 
     return "none", 0, 0, 0
 
@@ -95,9 +98,10 @@ def affichage(matrice):
     #print(f' {"_ " * width}')
     for row in matrice:
         print("|", end="")
-        row = list(map(lambda x: f'{ba.RED}X{st.RESET_ALL}|' if x == 1 else (f'{ba.YELLOW}O{st.RESET_ALL}|' if x == 2 else " |"), row))
+        row = list(map(lambda x: f'{ba.RED}X{st.RESET_ALL}|' if x == 1 else (f'{ba.YELLOW}O{st.RESET_ALL}|' if x == 2 else ' |'), row))
         print("".join(row))
     print(f' {" ".join(test)} ')
+
 
 def main():
     sys('cls' if name == 'nt' else 'clear')
