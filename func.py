@@ -1,9 +1,17 @@
+import flask
+app = flask.Flask(__name__)
+app.config["DEBUG"] = True
+
+
 def play(player, column, matrix):
     #manque les test (assert) pour les arguments
     assert type(player) is int, "player argument needs to be an integer"
     assert type(matrix) is list, "matrix argument needs to be a list"
-    assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "every matrix's lists needs to be the same length"
-    assert type(column) is int and 0 <= column < len(matrix[0]), "column argument needs to be an integer (...)"
+    assert all(list(
+        map(lambda x: len(x) == len(matrix[0]),
+            matrix))), "every matrix's lists needs to be the same length"
+    assert type(column) is int and 0 <= column < len(
+        matrix[0]), "column argument needs to be an integer (...)"
 
     col = [row[column] for row in matrix]
     if (0 not in col):
@@ -13,8 +21,8 @@ def play(player, column, matrix):
     return matrix, True
 
 
-def fourInRow(liste, nbr = 4):
-    if ((length:= len(liste)) < nbr): return 0, 0
+def fourInRow(liste, nbr=4):
+    if ((length := len(liste)) < nbr): return 0, 0
     player, counter = 0, 0
     for i in range(length):
         num = liste[i]
@@ -24,13 +32,21 @@ def fourInRow(liste, nbr = 4):
             return player, i
     return 0, 0
 
+
 ##################################
 #fonctions provisoire, utiliser pour simplifier les test
 from random import randint
+
+
 def mat():
-    return [[randint(0,2) for i in range(7)] for j in range(6)]
+    return [[randint(0, 2) for i in range(7)] for j in range(6)]
+
+
 def pri(t):
-    for i in t: print(i)
+    for i in t:
+        print(i)
+
+
 def test(a):
     for i in range(a):
         t = mat()
@@ -38,9 +54,12 @@ def test(a):
         print(test)
         if (test[1] != 0): pri(t)
         print("\n")
+
+
 ####################################
 
-def checkMatrix(matrix, nbr = 4):
+
+def checkMatrix(matrix, nbr=4):
     """ the function returns a tuple constitued of A, B, C, D:
     A is string being the "type" of sequence, either in a row, a column, an up-left to down-right diagonal (diag1) or an up-right to down-left diagonal (diag2)
     B is the number of the player who won
@@ -65,9 +84,9 @@ def checkMatrix(matrix, nbr = 4):
     for i in range(length - nbr + 1):
         liste1 = [matrix[j][k] for j, k in zip(range(i, limit), range(limit))]
         winner, index = fourInRow(liste1, nbr)
-        if (winner): return "diag1", winner, index+i, index
+        if (winner): return "diag1", winner, index + i, index
         #liste2 = [matrix[j][k] for j, k in zip(range(i, limit), range(width, 0, -1))]
-    
+
     return "none", 0, 0, 0
 
 
@@ -79,3 +98,38 @@ def CheckDiag(col):
         if (col[0][j] == 1 and col[1][j + 1] == 1):
             print("Diagonal Detected")
     print("Diagonal Check Complete")
+
+
+def checkifcollumavailable(board, col):
+    for row in board:
+        if row[col] == 0:
+            return True
+    return False
+
+
+####################################
+#Api il faut juste ramplacer board par la variable de la table
+
+
+@app.route('/', methods=['GET'])
+def home():
+    return flask.jsonify(board)
+
+
+@app.route('/', methods=['POST'])
+def my_test_endpoint():
+    input_json = flask.request.get_json(force=True)
+    # force=True, above, is necessary if another developer
+    # forgot to set the MIME type to 'application/json'
+    inp = input_json
+    print(inp)
+    if checkifcollumavailable(board, inp) == True:
+        dictToReturn = True
+    else:
+        dictToReturn = False
+    return flask.jsonify(dictToReturn)
+
+
+if __name__ == '__main__':
+    app.run(debug=True)
+app.run()
