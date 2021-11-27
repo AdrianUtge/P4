@@ -1,3 +1,5 @@
+#!/usr/bin/env -S python3 -i
+
 import flask
 app = flask.Flask(__name__)
 app.config["DEBUG"] = True
@@ -7,11 +9,8 @@ def play(player, column, matrix):
     #manque les test (assert) pour les arguments
     assert type(player) is int, "player argument needs to be an integer"
     assert type(matrix) is list, "matrix argument needs to be a list"
-    assert all(list(
-        map(lambda x: len(x) == len(matrix[0]),
-            matrix))), "every matrix's lists needs to be the same length"
-    assert type(column) is int and 0 <= column < len(
-        matrix[0]), "column argument needs to be an integer (...)"
+    assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "every matrix's lists needs to be the same length"
+    assert type(column) is int and 0 <= column < len(matrix[0]), "column argument needs to be an integer (...)"
 
     col = [row[column] for row in matrix]
     if (0 not in col):
@@ -36,30 +35,22 @@ def fourInRow(liste, nbr=4):
 ##################################
 #fonctions provisoire, utiliser pour simplifier les test
 from random import randint
-
-
 def mat():
-    return [[randint(0, 2) for i in range(7)] for j in range(6)]
-
-
+    return [[randint(0,2) for i in range(7)] for j in range(6)]
 def pri(t):
-    for i in t:
-        print(i)
-
-
+    for i in t: print(i)
 def test(a):
     for i in range(a):
         t = mat()
         test = checkMatrix(t)
         print(test)
-        if (test[1] != 0): pri(t)
-        print("\n")
-
-
+        if test[1]:
+            print("####################################################################")
+        pri(t)
 ####################################
 
 
-def checkMatrix(matrix, nbr=4):
+def checkMatrix(matrix, nbr = 4):
     """ the function returns a tuple constitued of A, B, C, D:
     A is string being the "type" of sequence, either in a row, a column, an up-left to down-right diagonal (diag1) or an up-right to down-left diagonal (diag2)
     B is the number of the player who won
@@ -67,7 +58,6 @@ def checkMatrix(matrix, nbr=4):
 
     length = len(matrix)
     width = len(matrix[0])
-
     for i in range(length):
         winner, index = fourInRow(matrix[i], nbr)
         if (winner): return "row", winner, i, index
@@ -77,15 +67,24 @@ def checkMatrix(matrix, nbr=4):
         winner, index = fourInRow(col, nbr)
         if (winner): return "col", winner, index, i
 
-    #diagonal checking WIP
-    #soon tm
-    limit = min(length, width)
-    #diagonal1 = [[matrix[j][k] for j, k in zip(range(i, limit), range(limit))] for i in range(length - 3)]
-    for i in range(length - nbr + 1):
-        liste1 = [matrix[j][k] for j, k in zip(range(i, limit), range(limit))]
-        winner, index = fourInRow(liste1, nbr)
-        if (winner): return "diag1", winner, index + i, index
-        #liste2 = [matrix[j][k] for j, k in zip(range(i, limit), range(width, 0, -1))]
+    #seriously needs to be upgraded, such as returned coordinates, returned sequence type and upgrade the bad usage of for loops 
+    for i in range(length):
+        diagonal = [matrix[j][j - i] for j in range(i, length)]
+        winner, index = fourInRow(diagonal, nbr)
+        if (winner): return "diag1", winner, index+i, index
+
+        diagonal = [matrix[j][length + i - j] for j in range(i, length)]
+        winner, index = fourInRow(diagonal, nbr)
+        if (winner): return "diag2", winner, index+i, index #coordinates not working
+
+        diagonal = [matrix[j][i - j] for j in range(i, -1, -1)]
+        winner, index = fourInRow(diagonal, nbr)
+        if (winner): return "diag3", winner, index+i, index #coordinates not working
+
+
+        diagonal = [matrix[j][length - i + j] for j in range(i, -1, -1)]
+        winner, index = fourInRow(diagonal, nbr)
+        if (winner): return "diag4", winner, index+i, index #coordinates not working
 
     return "none", 0, 0, 0
 
