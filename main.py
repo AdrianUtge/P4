@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 
-from colorama import Back as ba, Style as st
+#from colorama import Back as ba, Style as st
 from os import system as sys, name
 
 def play(player, column, matrix):
@@ -92,13 +92,17 @@ def checkMatrix(matrix, nbr = 4):
 
 
 def affichage(matrice):
+    RED = '\x1b[41m'
+    RESET_ALL = '\x1b[0m'
+    YELLOW = '\x1b[43m'
+
     width = len(matrice[0])
     test = list(map(str, range(1, width+1)))
     print(f' {" ".join(test)} ')
     #print(f' {"_ " * width}')
     for row in matrice:
         print("|", end="")
-        row = list(map(lambda x: f'{ba.RED}X{st.RESET_ALL}|' if x == 1 else (f'{ba.YELLOW}O{st.RESET_ALL}|' if x == 2 else ' |'), row))
+        row = list(map(lambda x: f'{RED}X{RESET_ALL}|' if x == 1 else (f'{YELLOW}O{RESET_ALL}|' if x == 2 else ' |'), row))
         print("".join(row))
     print(f' {" ".join(test)} ')
 
