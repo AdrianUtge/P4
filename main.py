@@ -181,9 +181,6 @@ def getValidToken(token, column_nbr):
     return token
 
 
-grille = [[0 for j in range(7)] for i in range(6)]
-
-
 def main(grille):
     """Programme principale"""
 
@@ -234,7 +231,41 @@ def main(grille):
     print("\nAucun des joueurs n'a gagner !")
 
 
-if __name__ == "__main__": main(grille)
+grille = [[0 for j in range(7)] for i in range(6)]
+#if __name__ == "__main__": main(grille)
+joueur, b = 1, 2
+winner = 0
+
+if __name__ == "__main__":
+    sys('cls' if name == 'nt' else 'clear')
+
+    @app.route('/', methods=['GET'])
+    def home():
+        return flask.jsonify(grille)
+
+    @app.route('/', methods=['POST'])
+    def my_test_endpoint():
+
+        input_json = flask.request.get_json(force=True)
+        # force=True, above, is necessary if another developer
+        # forgot to set the MIME type to 'application/json'
+        inp = input_json
+        global grille
+        global joueur, b
+        grille, played = play(joueur, inp, grille)
+        joueur, b = b, joueur
+
+        sys('cls' if name == 'nt' else 'clear')
+        affichage(grille)
+        print(f"Au tour du joueur {joueur}")
+        if checkifcollumavailable(grille, inp) == True:
+            dictToReturn = True
+        else:
+            dictToReturn = False
+        return flask.jsonify(dictToReturn)
+
+    app.run()
+
 """
 @app.route('/', methods=['GET'])
 def home():
