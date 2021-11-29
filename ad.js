@@ -7,7 +7,7 @@ function httpGet(theUrl) {
 
 
 
-a = (httpGet("http://localhost:3000"))
+a = (httpGet('http://127.0.0.1:5000/'))
 a = JSON.parse(a)
 for (let i = 0; i < a.length; i++) {
     console.log(a[i])
@@ -98,7 +98,7 @@ function checktop(col, db, row, cell) {
     console.log(db[row][col])
 
     var http = new XMLHttpRequest();
-    var url = 'http://localhost:3000/';
+    var url = 'http://127.0.0.1:5000/';
     var params = col,
         row;
     http.open('POST', url, true);

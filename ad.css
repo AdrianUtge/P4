@@ -7,27 +7,12 @@
     color: red;
 }
 
-.red:hover {
-    background-color: rgb(255, 111, 111);
-    color: rgb(255, 111, 111);
-}
-
 .blank {
     background-color: #DADADA;
     color: #DADADA;
 }
 
-.blank:hover {
-    background-color: #7A7A7A;
-    color: #7A7A7A;
-}
-
 .yellow {
     background-color: yellow;
     color: yellow;
-}
-
-.yellow:hover {
-    background-color: rgb(235, 235, 109);
-    color: rgb(235, 235, 109);
 }
