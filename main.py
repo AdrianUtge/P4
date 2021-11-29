@@ -10,7 +10,7 @@ def play(player, column, matrix):
         return new_matrix, played_bool
 
     "Ajoute" un jeton du joueur (player) indiqué dans la colonne (column) d'une grille (matrix) de jeu Puissance 4.
-    Retourne la grille de base et False si il n'y avaut okys de place dans la colonne, sinon renvoie la nouvelle matrice et True.
+    Retourne la grille de base et False si il n'y avaut plus de place dans la colonne, sinon renvoie la nouvelle matrice et True.
 
     Paramètres:
         - player (int): entier correspondant au numéro du joueur
@@ -56,7 +56,7 @@ def fourInRow(liste, nbr=4):
 
 
 ##################################
-#fonctions provisoire, utiliser pour simplifier les test
+#fonctions provisoires, utilisées pour simplifier les tests
 from random import randint
 def mat(a = 7, b = 6):
     return [[randint(0,2) for i in range(a)] for j in range(b)]
@@ -80,13 +80,13 @@ def checkMatrix(matrix, nbr = 4):
         ...
         return type_of_sequence, winner, indexX, indexY
 
-    Vérifie si il y'a un nombre indiquée (nbr) de jeton consécutif dans tout la grille de jeu (matrix) indiqué
+    Vérifie si il y'a un nombre indiquée (nbr) de jeton consécutif dans tout la grille de jeu (matrix) indiquée.
     Si il y a un gagnant, retourne le type de séquence trouvé (colonne, ligne ou diagonale), le numéro du joueur gagnant
-        , et l'index dans la matrice du dernier jeton de la séquence (ne marhche pas pour les diagonales)
+        , et l'index dans la matrice du dernier jeton de la séquence (ne marche pas pour les diagonales)
     Renvoie "none", 0, 0, 0 si la fonction n'a pas trouvé de séquence.
 
     Paramètres:
-        - matrix (list): une liste de liste correspondant à la grille du jeu, doit être consituté de liste de tailles égaux
+        - matrix (list): une liste de liste correspondant à la grille du jeu, doit être consituté de listes de tailles égales
         - nbr (int): le nombre indiquant la longueur de la séquence recherché
             -> valeur par défaut: 4
     """
@@ -105,7 +105,7 @@ def checkMatrix(matrix, nbr = 4):
         if (winner): return "col", winner, index, i
 
 
-    #gros bordel, flemme d'expliquer, vous  me demandrez IRL
+    #gros bordel, flemme d'expliquer, vous me demandrez IRL (ok merci pcq la j'ai rien capté) 
 
     #seriously needs to be upgraded, such as returned coordinates, returned sequence type and upgrade the bad usage of for loops 
     for i in range(width - nbr + 1):
@@ -189,7 +189,7 @@ def main():
         
         seq, winner, x, y = checkMatrix(grille) #recheche de séquence dans la grille 
         joueur, b = b, joueur #inversions des deux joueurs pour la prochaine itération de la boucle
-        sys('cls' if name == 'nt' else 'clear') #et on renettoie  
+        sys('cls' if name == 'nt' else 'clear') #et on nettoie une nouvelle fois
 
     print("PUISSANCE 4\n")
     affichage(grille)
