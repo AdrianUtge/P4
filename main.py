@@ -1,7 +1,9 @@
 #!/usr/bin/env python3
 
 from os import system as sys, name
-
+import flask
+app = flask.Flask(__name__)
+app.config["DEBUG"] = True
 
 def play(player, column, matrix):
     """
@@ -186,6 +188,27 @@ def main():
         print("PUISSANCE 4\n")
         affichage(grille)  #waaaaaaa :)
 
+        
+        @app.route('/', methods=['GET'])
+        def home():
+            return flask.jsonify(grille)
+
+        app.run()
+
+        @app.route('/', methods=['POST'])
+        def my_test_endpoint():
+            input_json = flask.request.get_json(force=True)
+            # force=True, above, is necessary if another developer
+            # forgot to set the MIME type to 'application/json'
+            inp = input_json
+            print(inp)
+            if checkifcollumavailable(db, inp) == True:
+                dictToReturn = True
+            else:
+                dictToReturn = False
+            return flask.jsonify(dictToReturn)
+
+
         #probablement à remplacer si on veut un beau gui
         colonne = input(
             f'\nJoueur {joueur} ({"X" if joueur == 1 else "O"}), indiquer la colonne où placer votre jeton : '
@@ -200,8 +223,9 @@ def main():
             colonne = int(getValidToken(colonne, 7)) - 1
             grille, played = play(joueur, colonne, grille)
 
-        seq, winner, x, y = checkMatrix(
-            grille)  #recheche de séquence dans la grille
+        
+
+        seq, winner, x, y = checkMatrix(grille)  #recheche de séquence dans la grille
         joueur, b = b, joueur  #inversions des deux joueurs pour la prochaine itération de la boucle
         sys('cls' if name == 'nt' else 'clear')  #et on renettoie
 
@@ -214,7 +238,7 @@ def main():
 
 if __name__ == "__main__": main()
 
-
+"""
 @app.route('/', methods=['GET'])
 def home():
     return flask.jsonify(db)
@@ -236,4 +260,4 @@ def my_test_endpoint():
 
 if __name__ == '__main__':
     app.run(debug=True)
-app.run()
+app.run()"""
