@@ -1,6 +1,5 @@
 #!/usr/bin/env python3
 
-#from colorama import Back as ba, Style as st
 from os import system as sys, name
 
 def play(player, column, matrix):
@@ -25,7 +24,7 @@ def play(player, column, matrix):
     col = [row[column] for row in matrix]
     if (0 not in col): #si il n'y a pas de place dans la colonne
         return matrix, False 
-    index = 5 - col[::-1].index(0) #recup l'index du dernier 0 de la colonne
+    index = len(col) - 1 - col[::-1].index(0) #recup l'index du dernier 0 de la colonne
     matrix[index][column] = player #... pour le remplacer par le jeton du joueur
     return matrix, True
 
@@ -141,6 +140,12 @@ def affichage(matrice):
     print(f' {" ".join(test)} ')
 
 
+def getValidToken(token, column_nbr):
+    while (not token.isdigit() or not (0 < int(token) < column_nbr + 1)):
+        token = input(f'Veuillez insérer un numéro de colonne valide ! : ')
+    return token
+    
+
 def main():
     """Programme principale"""
 
@@ -152,21 +157,15 @@ def main():
         print("PUISSANCE 4\n")
         affichage(grille) #waaaaaaa :)
         
-        #input hell ################################
+        #probablement à remplacer si on veut un beau gui
         colonne = input(f'\nJoueur {joueur} ({"X" if joueur == 1 else "O"}), indiquer la colonne où placer votre jeton : ')
-        while (not colonne.isdigit() or not (0 < int(colonne) < 8)):
-            colonne = input(f'Veuillez insérer un numéro de colonne valide ! : ')
+        colonne = int(getValidToken(colonne, 7)) - 1
 
-        colonne = int(colonne) - 1    
         grille, played = play(joueur, colonne, grille)
         while (not played):
             colonne = input(f'La colonne est déjà remplie, réinsérer un autre numéro de colonne : ')
-            while (not colonne.isdigit() or not (0 < int(colonne) < 8)):
-                colonne = input(f'Veuillez insérer un numéro de colonne valide ! : ')
-            colonne = int(colonne) - 1    
+            colonne = int(getValidToken(colonne, 7)) - 1
             grille, played = play(joueur, colonne, grille)
-        #fin de l'input hell ########################
-        #probablement à remplacer si on veut un beau gui
         
         seq, winner, x, y = checkMatrix(grille) #recheche de séquence dans la grille 
         joueur, b = b, joueur #inversions des deux joueurs pour la prochaine itération de la boucle
