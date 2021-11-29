@@ -55,25 +55,6 @@ def fourInRow(liste, nbr=4):
     return 0, 0
 
 
-##################################
-#fonctions provisoire, utiliser pour simplifier les test
-from random import randint
-def mat(a = 7, b = 6):
-    return [[randint(0,2) for i in range(a)] for j in range(b)]
-def pri(t):
-    for i in t: print(i)
-def test(a):
-    for i in range(a):
-        t = mat()
-        test = checkMatrix(t)
-        print(test)
-        if test[1]:
-            print("####################################################################")
-        pri(t)
-####################################
-
-
-
 def checkMatrix(matrix, nbr = 4):
     """ 
     checkMatrix(matrix, [nbr]):
