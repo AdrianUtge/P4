@@ -9,10 +9,6 @@ function httpGet(theUrl) {
 
 a = (httpGet('http://127.0.0.1:5000/'))
 a = JSON.parse(a)
-for (let i = 0; i < a.length; i++) {
-    console.log(a[i])
-}
-
 
 // IEWIN boolean previously sniffed through eg. conditional comments
 
@@ -22,10 +18,6 @@ function img_create(src, alt, title) {
     if (alt != null) img.alt = alt;
     if (title != null) img.title = title;
     return img;
-}
-
-function CheckColum(db, rowN, number) {
-    console.log(rowN, number)
 }
 
 var tableArr = a
@@ -39,7 +31,6 @@ for (let f = 0; f < tableArr.length; f++) {
     //Iterate over every index(cell) in each array(row)
     for (let i = 0; i < row.length; i++) {
         let cell = row[i]
-        console.log(i, f, cell)
         let newCell = table.rows[table.rows.length - 1].insertCell();
         if (cell != 0) {
             if (cell == 1) {
@@ -47,7 +38,7 @@ for (let f = 0; f < tableArr.length; f++) {
                 newCell.className += "red";
                 newCell.id += i;
                 newCell.onclick = function () {
-                    console.log(i)
+                    //console.log(i)
                     checktop(i, tableArr, f, cell)
                 }
 
@@ -58,7 +49,7 @@ for (let f = 0; f < tableArr.length; f++) {
                 newCell.className += "yellow";
                 newCell.id += i;
                 newCell.onclick = function () {
-                    console.log(i)
+                    //  console.log(i)
                     checktop(i, tableArr, f, cell)
                 }
 
@@ -68,7 +59,7 @@ for (let f = 0; f < tableArr.length; f++) {
             newCell.className += "blank";
             newCell.id += i;
             newCell.onclick = function () {
-                console.log(i)
+                // console.log(i)
                 checktop(i, tableArr, f, cell)
             }
 
@@ -84,28 +75,58 @@ for (let f = 0; f < tableArr.length; f++) {
 }
 //append the compiled table to the DOM
 document.body.appendChild(table);
-var nodes = document.querySelectorAll(".blank");
+/* var nodes = document.querySelectorAll(".blank");
 for (var node in nodes) {
     node.addEventListener('click', function (event) {
         console.log('Oh dang, you just clicked!');
     })
 }
-
+ */
 
 
 function checktop(col, db, row, cell) {
-    console.log(col, db, row, cell)
-    console.log(db[row][col])
+    // console.log(col, db, row, cell)
+    //console.log(db[row][col])
 
     var http = new XMLHttpRequest();
     var url = 'http://127.0.0.1:5000/';
     var params = col,
         row;
-    http.open('POST', url, true);
 
+    http.onreadystatechange = function () {
+        if (http.readyState == 4 && http.status == 200) {
+            const w = JSON.parse(http.responseText)
+            FIN(w)
+        }
+    };
+    http.open('POST', url, true);
     //Send the proper header information along with the request
     http.setRequestHeader('Content-type', 'application/x-www-form-urlencoded');
 
     http.send(params);
 
+}
+
+
+
+function FIN(a) {
+    console.log(a[1])
+    if (a[1] != 0) {
+        if (a[1] == 1) {
+            alert("Red Wons")
+            if (confirm("Play again?")) {
+                httpGet('http://127.0.0.1:5000/end');
+                location.reload();
+            }
+        }
+        if (a[1] == 2) {
+            alert("Yellow Wons")
+            if (confirm("Play again?")) {
+                httpGet('http://127.0.0.1:5000/end');
+
+                location.reload();
+            }
+        }
+    }
+    location.reload();
 }

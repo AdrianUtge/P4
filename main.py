@@ -181,7 +181,7 @@ def getValidToken(token, column_nbr):
     return token
 
 
-def main(grille):
+''' def main(grille):
     """Programme principale"""
 
     sys(
@@ -209,7 +209,7 @@ def main(grille):
             global grille
             grille, played = play(joueur, inp, grille)
             print(inp)
-            affichage(grille)
+            ##1 affichage(grille)
             if checkifcollumavailable(grille, inp) == True:
                 dictToReturn = True
             else:
@@ -217,7 +217,6 @@ def main(grille):
             return flask.jsonify(dictToReturn)
 
         app.run()
-        #probablement à remplacer si on veut un beau gui
 
         seq, winner, x, y = checkMatrix(
             grille)  #recheche de séquence dans la grille
@@ -229,6 +228,12 @@ def main(grille):
     if (winner):
         return print(f"\nLe gagnant est le joueur {winner}")
     print("\nAucun des joueurs n'a gagner !")
+ '''
+
+
+def board():
+    global grille
+    grille = [[0 for j in range(7)] for i in range(6)]
 
 
 grille = [[0 for j in range(7)] for i in range(6)]
@@ -255,17 +260,19 @@ if __name__ == "__main__":
         grille, played = play(joueur, inp, grille)
         joueur, b = b, joueur
 
+        q, w, e, r = checkMatrix(grille)
+
         sys('cls' if name == 'nt' else 'clear')
-        affichage(grille)
+        ##        affichage(grille)
         print(f"Au tour du joueur {joueur}")
-        if checkifcollumavailable(grille, inp) == True:
-            dictToReturn = True
-        else:
-            dictToReturn = False
-        return flask.jsonify(dictToReturn)
+        return flask.jsonify(checkMatrix(grille))
+
+    @app.route('/end', methods=['GET'])
+    def end():
+        board()
+        return flask.jsonify("ok")
 
     app.run()
-
 """
 @app.route('/', methods=['GET'])
 def home():
