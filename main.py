@@ -16,10 +16,10 @@ def play(player, column, matrix):
         - column (int): entier correspondant au numéro de la colonne où ajouter le jeton
         - matrix (list): une liste de liste (matrice) correspondant à la grille de jeu, les listes doivent être de taille égale
     """
-    assert type(player) is int, "player argument needs to be an integer"
-    assert type(matrix) is list, "matrix argument needs to be a list"
-    assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "every matrix's lists needs to be the same length"
-    assert type(column) is int and 0 <= column < len(matrix[0]), "column argument needs to be an integer (...)"
+    assert type(player) is int, "l'argument du paramètre player doit être un entier"
+    assert type(matrix) is list and type(matrix[0]) is list, "l'argument e matrix doit être une liste de listes"
+    assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "tout les liste de l'argument de matrix doivent avoir la même taille"
+    assert type(column) is int and 0 <= column < len(matrix[0]), "l'argument de column doit être un numéro de colonne valide de la grille."
 
     col = [row[column] for row in matrix]
     if (0 not in col): #si il n'y a pas de place dans la colonne
@@ -43,6 +43,8 @@ def fourInRow(liste, nbr=4):
         - nbr (int): le nombre indiquant la séquence de jeton voulue
             -> valeur par défaut: 4
     """
+    assert type(liste) is list, "l'argument liste doit être une list"
+    assert type(nbr) is list, "l'argument de nbr doit être une entier" #seulement si une autre valeur a été donner en argument
     if ((length := len(liste)) < nbr): return 0, 0 #si la taille de la liste est plus petite que la séquence voulu, return 0, 0
     player, counter = 0, 0 #player étant le joueur du jeton analysé, counter étant le compteur de ces jetons à la suite
     for i in range(length):
@@ -70,7 +72,11 @@ def checkMatrix(matrix, nbr = 4):
         - nbr (int): le nombre indiquant la longueur de la séquence recherché
             -> valeur par défaut: 4
     """
+    assert type(matrix) is list and type(matrix[0]) is list, "l'argument e matrix doit être une liste de listes"
+    assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "tout les liste de l'argument de matrix doivent avoir la même taille"
+    assert type(nbr) is list, "l'argument de nbr doit être une entier" #seulement si une autre valeur a été donner en argument
 
+    if (type(nbr) is not int): nbr = 4
 
     length = len(matrix)
     width = len(matrix[0])
@@ -121,6 +127,8 @@ def affichage(matrice):
     Paramètres:
         - matrice (list): la grille de jeu à afficher, doit être une liste de liste.
     """
+    assert type(matrix) is list and type(matrix[0]) is list, "l'argument e matrix doit être une liste de listes"
+    assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "tout les liste de l'argument de matrix doivent avoir la même taille"
 
     #code d'échappement ANSI permettant la coloration des jeton (c'est plus joli comme ça :D )
     RED = '\x1b[41m'
@@ -140,7 +148,14 @@ def affichage(matrice):
     print(f' {" ".join(test)} ')
 
 
-def getValidToken(token, column_nbr):
+def getValidToken(token, column_nbr): #utilisé pour simplifier un peu le code dans le main()
+    """ ... return valid_token_nbr
+    Vérifie si l'input de l'utilisateur est bien un nombre entier naturel non nulle, sinon redemande une nouvelle input.
+
+    Paramètres:
+        - token (str): le précédent input de l'utilisateur qui sera vérifié
+        - column_nbr (int): le nombre de colonnes de la grille
+    """
     while (not token.isdigit() or not (0 < int(token) < column_nbr + 1)):
         token = input(f'Veuillez insérer un numéro de colonne valide ! : ')
     return token
