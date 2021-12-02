@@ -44,7 +44,7 @@ def fourInRow(liste, nbr=4):
             -> valeur par défaut: 4
     """
     assert type(liste) is list, "l'argument liste doit être une list"
-    assert type(nbr) is list, "l'argument de nbr doit être une entier" #seulement si une autre valeur a été donner en argument
+    assert type(nbr) is int, "l'argument de nbr doit être une entier" #seulement si une autre valeur a été donner en argument
     if ((length := len(liste)) < nbr): return 0, 0 #si la taille de la liste est plus petite que la séquence voulu, return 0, 0
     player, counter = 0, 0 #player étant le joueur du jeton analysé, counter étant le compteur de ces jetons à la suite
     for i in range(length):
@@ -74,7 +74,7 @@ def checkMatrix(matrix, nbr = 4):
     """
     assert type(matrix) is list and type(matrix[0]) is list, "l'argument e matrix doit être une liste de listes"
     assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "tout les liste de l'argument de matrix doivent avoir la même taille"
-    assert type(nbr) is list, "l'argument de nbr doit être une entier" #seulement si une autre valeur a été donner en argument
+    assert type(nbr) is int, "l'argument de nbr doit être une entier" #seulement si une autre valeur a été donner en argument
 
     if (type(nbr) is not int): nbr = 4
 
@@ -127,8 +127,8 @@ def affichage(matrice):
     Paramètres:
         - matrice (list): la grille de jeu à afficher, doit être une liste de liste.
     """
-    assert type(matrix) is list and type(matrix[0]) is list, "l'argument e matrix doit être une liste de listes"
-    assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "tout les liste de l'argument de matrix doivent avoir la même taille"
+    assert type(matrice) is list and type(matrice[0]) is list, "l'argument de matrice doit être une liste de listes"
+    assert all(list(map(lambda x: len(x) == len(matrice[0]), matrice))), "tout les liste de l'argument de matrice doivent avoir la même taille"
 
     #code d'échappement ANSI permettant la coloration des jeton (c'est plus joli comme ça :D )
     RED = '\x1b[41m'
