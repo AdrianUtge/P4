@@ -25,7 +25,7 @@ def play(player, column, matrix):
         return matrix, False 
 
     #récupère l'index du dernier 0 de la colonne
-    col = col[::-1]
+    col = col[::-1] #inverse la colonne
     index = col.index(0)
     index = len(col) - 1 - index 
 
@@ -35,7 +35,7 @@ def play(player, column, matrix):
 
 def gagner(liste, nbr=4):
     """
-    vérifie si il y'a un certain nombre de jeton conséctif dans une liste
+    vérifie si il y'a un certain nombre de jeton consécutif dans une liste
     """
     assert type(liste) is list
     assert type(nbr) is int
@@ -75,32 +75,34 @@ def checkMatrix(matrix, nbr = 4):
     assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "tout les liste de l'argument de matrix doivent avoir la même taille"
     assert type(nbr) is int, "l'argument de nbr doit être une entier" #utile seulement si une autre valeur a été donner en argument
 
-    length = len(matrix)
-    width = len(matrix[0])
+    longueur = len(matrix)
+    largeur = len(matrix[0])
 
-    for i in range(length):
+    #lignes
+    for i in range(longueur):
         winner, index = gagner(matrix[i], nbr)
         if (winner): return "row", winner, i, index
 
-    for i in range(width):
-        col = [matrix[j][i] for j in range(length)]
+    #colonnes
+    for i in range(largeur):
+        col = [matrix[j][i] for j in range(longueur)]
         winner, index = gagner(col, nbr)
         if (winner): return "col", winner, index, i
 
-
-    limit = min(length, width)
-    for i in range(width - nbr + 1):
-        diagonal = [matrix[k][j] for j, k in zip(range(i, width), range(limit))]
+    #diagonales
+    limit = min(longueur, largeur)
+    for i in range(largeur - nbr + 1):
+        diagonal = [matrix[k][j] for j, k in zip(range(i, largeur), range(limit))]
         winner, index = gagner(diagonal, nbr)
         if (winner): return "diag1", winner, index, index+i
 
-        diagonal = [matrix[k][j] for j, k in zip(range(i, width), range(limit-1, -1, -1))]
+        diagonal = [matrix[k][j] for j, k in zip(range(i, largeur), range(limit-1, -1, -1))]
         winner, index = gagner(diagonal, nbr)
         if (winner): return "diag2", winner, index+i, index #coordinates not working
 
-    for i in range(1, length - 1):
-        if (length - i >= nbr):
-            diagonal = [matrix[j][k] for j, k in zip(range(i, length), range(limit))]
+    for i in range(1, longueur - 1):
+        if (longueur - i >= nbr):
+            diagonal = [matrix[j][k] for j, k in zip(range(i, longueur), range(limit))]
             winner, index = gagner(diagonal, nbr)
             if (winner): return "diag3", winner, index+i, index
 
@@ -169,7 +171,7 @@ def main():
 
     #any(map(lambda row: 0 in row, grille))
     nbrTours = 42 #le nombre maxium de tour possible
-    while (winner == 0 and nbrTours != 0): #tant qu'il y a pas de gagnant et qu'il y'a encore de la place dans la grille
+    while (winner == 0 and nbrTours != 0): #tant qu'il y a pas de gagnant et que le jeu n'est pas finie
         print("PUISSANCE 4\n")
         affichage(grille) #waaaaaaa :)
         
