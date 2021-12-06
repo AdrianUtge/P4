@@ -38,13 +38,6 @@ def play(player, column, matrix):
     return matrix, True
 
 
-def checkifcollumavailable(board, col):
-    for row in board:
-        if row[col] == 0:
-            return True
-    return False
-
-
 def fourInRow(liste, nbr=4):
     """
     fourInRow(liste [, nbr]):
@@ -180,57 +173,6 @@ def getValidToken(token, column_nbr):
         token = input(f'Veuillez insérer un numéro de colonne valide ! : ')
     return token
 
-
-''' def main(grille):
-    """Programme principale"""
-
-    sys(
-        'cls' if name == 'nt' else 'clear'
-    )  #nettoie tout le terminal dès le début, et le refait à chaque tour (c'est encore plus joli :D )
-    joueur, b = 1, 2  #les numéros des deux joueurs, à chaque tour on inverse les deux numéros
-    winner = 0
-    while (
-            winner == 0 and any(map(lambda row: 0 in row, grille))
-    ):  #tant qu'il y a pas de gagnant et qu'il y'a encore de la place dans la grille
-        print("PUISSANCE 4\n")
-        affichage(grille)  #waaaaaaa :)
-
-        @app.route('/', methods=['GET'])
-        def home():
-            return flask.jsonify(grille)
-
-        @app.route('/', methods=['POST'])
-        def my_test_endpoint():
-
-            input_json = flask.request.get_json(force=True)
-            # force=True, above, is necessary if another developer
-            # forgot to set the MIME type to 'application/json'
-            inp = input_json
-            global grille
-            grille, played = play(joueur, inp, grille)
-            print(inp)
-            ##1 affichage(grille)
-            if checkifcollumavailable(grille, inp) == True:
-                dictToReturn = True
-            else:
-                dictToReturn = False
-            return flask.jsonify(dictToReturn)
-
-        app.run()
-
-        seq, winner, x, y = checkMatrix(
-            grille)  #recheche de séquence dans la grille
-        joueur, b = b, joueur  #inversions des deux joueurs pour la prochaine itération de la boucle
-        sys('cls' if name == 'nt' else 'clear')  #et on renettoie
-
-    print("PUISSANCE 4\n")
-    affichage(grille)
-    if (winner):
-        return print(f"\nLe gagnant est le joueur {winner}")
-    print("\nAucun des joueurs n'a gagner !")
- '''
-
-
 def board():
     global grille
     grille = [[0 for j in range(7)] for i in range(6)]
@@ -273,26 +215,3 @@ if __name__ == "__main__":
         return flask.jsonify("ok")
 
     app.run()
-"""
-@app.route('/', methods=['GET'])
-def home():
-    return flask.jsonify(db)
-
-
-@app.route('/', methods=['POST'])
-def my_test_endpoint():
-    input_json = flask.request.get_json(force=True)
-    # force=True, above, is necessary if another developer
-    # forgot to set the MIME type to 'application/json'
-    inp = input_json
-    print(inp)
-    if checkifcollumavailable(db, inp) == True:
-        dictToReturn = True
-    else:
-        dictToReturn = False
-    return flask.jsonify(dictToReturn)
-
-
-if __name__ == '__main__':
-    app.run(debug=True)
-app.run()"""
