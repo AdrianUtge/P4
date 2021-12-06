@@ -4,7 +4,6 @@ from os import system as sys, name
 
 def play(player, column, matrix):
     """
-    play(player, column, matrix):
         ...
         return new_matrix, played_bool
 
@@ -12,19 +11,24 @@ def play(player, column, matrix):
     Retourne la grille de base et False si il n'y avaut okys de place dans la colonne, sinon renvoie la nouvelle matrice et True.
 
     Paramètres:
-        - player (int): entier correspondant au numéro du joueur
+        - player (any): variable correspondant au jeton du joueur
         - column (int): entier correspondant au numéro de la colonne où ajouter le jeton
         - matrix (list): une liste de liste (matrice) correspondant à la grille de jeu, les listes doivent être de taille égale
     """
-    assert type(player) is int, "l'argument du paramètre player doit être un entier"
     assert type(matrix) is list and type(matrix[0]) is list, "l'argument de matrix doit être une liste de listes"
     assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "tout les liste de l'argument de matrix doivent avoir la même taille"
     assert type(column) is int and 0 <= column < len(matrix[0]), "l'argument de column doit être un numéro de colonne valide de la grille."
 
     col = [row[column] for row in matrix]
+
     if (0 not in col): #si il n'y a pas de place dans la colonne
         return matrix, False 
-    index = len(col) - 1 - col[::-1].index(0) #recup l'index du dernier 0 de la colonne
+
+    #récupère l'index du dernier 0 de la colonne
+    col = col[::-1]
+    index = col.index(0)
+    index = len(col) - 1 - index 
+
     matrix[index][column] = player #... pour le remplacer par le jeton du joueur
     return matrix, True
 
@@ -54,7 +58,6 @@ def gagner(liste, nbr=4):
 
 def checkMatrix(matrix, nbr = 4):
     """ 
-    checkMatrix(matrix, [nbr]):
         ...
         return type_of_sequence, winner, indexX, indexY
 
@@ -68,13 +71,13 @@ def checkMatrix(matrix, nbr = 4):
         - nbr (int): le nombre indiquant la longueur de la séquence recherché
             -> valeur par défaut: 4
     """
-    assert type(matrix) is list and type(matrix[0]) is list, "l'argument e matrix doit être une liste de listes"
+    assert type(matrix) is list and type(matrix[0]) is list, "l'argument de matrix doit être une liste de listes"
     assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "tout les liste de l'argument de matrix doivent avoir la même taille"
-    assert type(nbr) is int, "l'argument de nbr doit être une entier" #seulement si une autre valeur a été donner en argument
+    assert type(nbr) is int, "l'argument de nbr doit être une entier" #utile seulement si une autre valeur a été donner en argument
 
     length = len(matrix)
     width = len(matrix[0])
-    limit = min(length, width)
+
     for i in range(length):
         winner, index = gagner(matrix[i], nbr)
         if (winner): return "row", winner, i, index
@@ -85,7 +88,7 @@ def checkMatrix(matrix, nbr = 4):
         if (winner): return "col", winner, index, i
 
 
-    #seriously needs to be upgraded, such as returned coordinates, returned sequence type and upgrade the bad usage of for loops 
+    limit = min(length, width)
     for i in range(width - nbr + 1):
         diagonal = [matrix[k][j] for j, k in zip(range(i, width), range(limit))]
         winner, index = gagner(diagonal, nbr)
@@ -111,8 +114,8 @@ def checkMatrix(matrix, nbr = 4):
 
 def affichage(matrice):
     """
-    affichage(matrice):
-        #doesn't return anything
+        ...
+        return None
 
     Affiche la grille de jeu dans le shell, en remplaçant les 1 par des 'X' rouge et les 2 par des 'O' jaune.
 
@@ -120,7 +123,7 @@ def affichage(matrice):
         - matrice (list): la grille de jeu à afficher, doit être une liste de liste.
     """
     assert type(matrice) is list and type(matrice[0]) is list, "l'argument de matrice doit être une liste de listes"
-    assert all(list(map(lambda x: len(x) == len(matrice[0]), matrice))), "tout les liste de l'argument de matrice doivent avoir la même taille"
+    assert all(map(lambda x: len(x) == len(matrice[0]), matrice)), "tout les liste de l'argument de matrice doivent avoir la même taille"
 
     #code d'échappement ANSI permettant la coloration des jeton (c'est plus joli comme ça :D )
     RED = '\x1b[41m'
@@ -128,8 +131,8 @@ def affichage(matrice):
     RESET_ALL = '\x1b[0m'
 
     width = len(matrice[0])
-    test = list(map(str, range(1, width+1))) #imprime le numéro au dessus de chaque colonne pour aider les joueurs
-    print(f' {" ".join(test)} ')
+    test = list(map(str, range(1, width+1)))
+    print(' ' + " ".join(test)) #imprime le numéro au dessus de chaque colonne pour aider les joueurs
     #print(f' {"_ " * width}')
     for row in matrice:
         print("|", end="")
@@ -141,7 +144,9 @@ def affichage(matrice):
 
 
 def getValidToken(token, column_nbr): #utilisé pour simplifier un peu le code dans le main()
-    """ ... return valid_token_nbr
+    """ 
+        ... return valid_token_nbr
+
     Vérifie si l'input de l'utilisateur est bien un nombre entier naturel non nulle, sinon redemande une nouvelle input.
 
     Paramètres:
@@ -157,14 +162,17 @@ def main():
     """Programme principale"""
 
     sys('cls' if name == 'nt' else 'clear') #nettoie tout le terminal dès le début, et le refait à chaque tour (c'est encore plus joli :D )
+
     grille = [[0 for j in range(7)] for i in range(6)]
     joueur, b = 1, 2 #les numéros des deux joueurs, à chaque tour on inverse les deux numéros
     winner = 0
-    while (winner == 0 and any(map(lambda row: 0 in row, grille))): #tant qu'il y a pas de gagnant et qu'il y'a encore de la place dans la grille
+
+    #any(map(lambda row: 0 in row, grille))
+    nbrTours = 42 #le nombre maxium de tour possible
+    while (winner == 0 and nbrTours != 0): #tant qu'il y a pas de gagnant et qu'il y'a encore de la place dans la grille
         print("PUISSANCE 4\n")
         affichage(grille) #waaaaaaa :)
         
-        #probablement à remplacer si on veut un beau gui
         colonne = input(f'\nJoueur {joueur} ({"X" if joueur == 1 else "O"}), indiquer la colonne où placer votre jeton : ')
         colonne = int(getValidToken(colonne, 7)) - 1
 
@@ -174,14 +182,18 @@ def main():
             colonne = int(getValidToken(colonne, 7)) - 1
             grille, played = play(joueur, colonne, grille)
         
-        seq, winner, x, y = checkMatrix(grille) #recheche de séquence dans la grille 
+        winner = checkMatrix(grille)[1] #recheche de séquence dans la grille 
+
         joueur, b = b, joueur #inversions des deux joueurs pour la prochaine itération de la boucle
+        nbrTours -= 1
         sys('cls' if name == 'nt' else 'clear') #et on renettoie  
 
     print("PUISSANCE 4\n")
     affichage(grille)
+
     if (winner):
-        return print(f"\nLe gagnant est le joueur {winner}")
-    print("\nAucun des joueurs n'a gagner !")
+        print(f"\nLe gagnant est le joueur {winner}")
+    else:
+        print("\nAucun des joueurs n'a gagner !")
 
 if __name__ == "__main__": main()
