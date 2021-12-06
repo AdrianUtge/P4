@@ -16,7 +16,7 @@ def play(player, column, matrix):
         - matrix (list): une liste de liste (matrice) correspondant à la grille de jeu, les listes doivent être de taille égale
     """
     assert type(matrix) is list and type(matrix[0]) is list, "l'argument de matrix doit être une liste de listes"
-    assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "tout les liste de l'argument de matrix doivent avoir la même taille"
+    assert all(map(lambda x: len(x) == len(matrix[0]), matrix)), "tout les liste de l'argument de matrix doivent avoir la même taille"
     assert type(column) is int and 0 <= column < len(matrix[0]), "l'argument de column doit être un numéro de colonne valide de la grille."
 
     col = [row[column] for row in matrix]
@@ -72,7 +72,7 @@ def checkMatrix(matrix, nbr = 4):
             -> valeur par défaut: 4
     """
     assert type(matrix) is list and type(matrix[0]) is list, "l'argument de matrix doit être une liste de listes"
-    assert all(list(map(lambda x: len(x) == len(matrix[0]), matrix))), "tout les liste de l'argument de matrix doivent avoir la même taille"
+    assert all(map(lambda x: len(x) == len(matrix[0]), matrix)), "tout les liste de l'argument de matrix doivent avoir la même taille"
     assert type(nbr) is int, "l'argument de nbr doit être une entier" #utile seulement si une autre valeur a été donner en argument
 
     longueur = len(matrix)
