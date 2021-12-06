@@ -38,33 +38,26 @@ def play(player, column, matrix):
     return matrix, True
 
 
-def fourInRow(liste, nbr=4):
+def gagner(liste, nbr=4):
     """
-    fourInRow(liste [, nbr]):
-        ...
-        return winner, index_of_last_token
-
-    Vérifie si il y'a un nombre indiquée (nbr) de jeton consécutif dans la liste (liste) donnée
-    Retourne le gagnant et l'index du dernier jeton de la séquence, sinon retourne 0, 0
-
-    Paramètres:
-        - liste (list): la liste où trouver la suite de jeton, l'entier 0 est compris comme l'absence de jeton
-        - nbr (int): le nombre indiquant la séquence de jeton voulue
-            -> valeur par défaut: 4
+    vérifie si il y'a un certain nombre de jeton conséctif dans une liste
     """
-    if ((length := len(liste)) < nbr):
-        return 0, 0  #si la taille de la liste est plus petite que la séquence voulu, return 0, 0
-    player, counter = 0, 0  #player étant le joueur du jeton analysé, counter étant le compteur de ces jetons à la suite
-    for i in range(length):
-        num = liste[i]
-        if (player != num):
-            player, counter = num, 1  #si le jeton est différent du précedent, on réinitialise player et counter
-        else:
-            counter += bool(
-                player
-            )  #ajoute 1 (True = 1) au compteur, n'ajoute rien (False = 0) si le jeton vaut 0
-        if (counter == nbr):
-            return player, i
+    assert type(liste) is list
+    assert type(nbr) is int
+
+    joueur  = 0
+    compteur = 0
+    for i in range(len(liste)):
+        jeton = liste[i]
+
+        if (joueur != jeton):
+            joueur = jeton
+            compteur = 1
+        elif (joueur == 1 or joueur == 2):
+            compteur += 1
+
+        if (compteur == nbr):
+            return joueur, i
     return 0, 0
 
 
@@ -89,12 +82,12 @@ def checkMatrix(matrix, nbr=4):
     width = len(matrix[0])
     limit = min(length, width)
     for i in range(length):
-        winner, index = fourInRow(matrix[i], nbr)
+        winner, index = gagner(matrix[i], nbr)
         if (winner): return "row", winner, i, index
 
     for i in range(width):
         col = [matrix[j][i] for j in range(length)]
-        winner, index = fourInRow(col, nbr)
+        winner, index = gagner(col, nbr)
         if (winner): return "col", winner, index, i
 
     #gros bordel, flemme d'expliquer, vous  me demandrez IRL
@@ -104,14 +97,14 @@ def checkMatrix(matrix, nbr=4):
         diagonal = [
             matrix[k][j] for j, k in zip(range(i, width), range(limit))
         ]
-        winner, index = fourInRow(diagonal, nbr)
+        winner, index = gagner(diagonal, nbr)
         if (winner): return "diag1", winner, index, index + i
 
         diagonal = [
             matrix[k][j]
             for j, k in zip(range(i, width), range(limit - 1, -1, -1))
         ]
-        winner, index = fourInRow(diagonal, nbr)
+        winner, index = gagner(diagonal, nbr)
         if (winner):
             return "diag2", winner, index + i, index  #coordinates not working
 
@@ -120,14 +113,14 @@ def checkMatrix(matrix, nbr=4):
             diagonal = [
                 matrix[j][k] for j, k in zip(range(i, length), range(limit))
             ]
-            winner, index = fourInRow(diagonal, nbr)
+            winner, index = gagner(diagonal, nbr)
             if (winner): return "diag3", winner, index + i, index
 
         if (i + 1 >= nbr):
             diagonal = [
                 matrix[j][k] for j, k in zip(range(i, -1, -1), range(limit))
             ]
-            winner, index = fourInRow(diagonal, nbr)
+            winner, index = gagner(diagonal, nbr)
             if (winner): return "diag4", winner, index + i, index
 
     return "none", 0, 0, 0
